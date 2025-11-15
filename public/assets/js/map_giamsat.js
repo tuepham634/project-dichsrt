@@ -15,7 +15,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
 // ===== LayerGroups quản lý overlay =====
 const layerGroups = {
-    wms: L.layerGroup().addTo(map),
+    wms: L.layerGroup(),
     wfs_defor: L.layerGroup().addTo(map),
     wfs_degrad: L.layerGroup().addTo(map)
 };
@@ -79,7 +79,7 @@ function loadWFS(typeMap) {
 
 // ===== tạo nhóm  để chọn riêng cho conditon
 const layerGroups2 = {
-    wms: L.layerGroup().addTo(map),
+    wms: L.layerGroup(),
     wfs_defor: L.layerGroup().addTo(map),
     wfs_degrad: L.layerGroup().addTo(map)
 };
@@ -247,6 +247,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (xa && tk && khoanh && lo) {
         loadWFSByCondition(bando, { xa, tk, khoanh, lo });
         const infoTable = document.querySelector(".info-table");
+        const header = document.querySelector(".header")
+        const topheader = document.querySelector(".top-header")
+        const footer = document.querySelector(".footer")
+        const map = document.querySelector("#map_giam_sat")
+        if (map) map.style.height = "100vh"
+        if (header) header.style.display = "none"
+        if (topheader) topheader.style.display = "none"
+        if (footer) footer.style.display = "none"
         if (infoTable) infoTable.style.display = "none";
     }
 });
@@ -297,7 +305,7 @@ const basemapControl = L.Control.extend({
         // Checkbox overlay
         const overlayGroup = L.DomUtil.create('div', 'overlay-checkboxes', menu);
         overlayGroup.innerHTML = `
-            <label><input type="checkbox" name="overlayLayer" value="wms" checked> WMS Layer</label><br>
+            <label><input type="checkbox" name="overlayLayer" value="wms"> WMS Layer</label><br>
             <label><input type="checkbox" name="overlayLayer" value="wfs_defor" checked> WFS (defor)</label><br>
             <label><input type="checkbox" name="overlayLayer" value="wfs_degrad" checked> WFS (degrad)</label><br>
         `;

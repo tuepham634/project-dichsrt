@@ -195,6 +195,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (xa && tk && khoanh && lo) {
         loadWFSByCondition(bando, { xa, tk, khoanh, lo });
         const infoTable = document.querySelector(".info-table");
+        const header = document.querySelector(".header")
+        const topheader = document.querySelector(".top-header")
+        const footer = document.querySelector(".footer")
+        const map = document.querySelector("#map_canh_bao")
+        if (map) map.style.height = "100vh"
+        if (header) header.style.display = "none"
+        if (topheader) topheader.style.display = "none"
+        if (footer) footer.style.display = "none"
         if (infoTable) infoTable.style.display = "none";
     }
 });
@@ -281,27 +289,41 @@ map.addControl(mapControl);
 /* =============================
    CHÚ THÍCH BẢN ĐỒ
 ==============================*/
+/* ========================== 
+     Chú thích bản đồ
+    ============================*/
+
 const legendControl = L.Control.extend({
-    options: { position: 'bottomleft' },
-    onAdd: () => {
+    options: { position: 'bottomleft' }, // vị trí góc trái dưới
+
+    onAdd: (map) => {
         const container = L.DomUtil.create('div', 'legendControl');
+
+        // Tiêu đề
         const title = L.DomUtil.create('div', 'legend-title', container);
         title.innerText = 'Chú thích';
 
+        // Danh sách các mức
         const items = [
-            { color: 'red', label: 'Diện tích ảnh hưởng' },
-            { color: 'blue', label: 'Vùng tìm kiếm' }
+            { color: 'yellow', label: 'Trung Bình' },
+            { color: 'orange', label: 'Nặng' },
+            { color: 'red', label: 'Rất Nặng' }
         ];
 
-        items.forEach(({ color, label }) => {
+        items.forEach(item => {
             const row = L.DomUtil.create('div', 'legend-item', container);
+
             const box = L.DomUtil.create('span', 'legend-box', row);
-            box.style.backgroundColor = color;
-            L.DomUtil.create('span', 'legend-text', row).innerText = label;
+            box.style.backgroundColor = item.color;
+
+            const text = L.DomUtil.create('span', 'legend-text', row);
+            text.innerText = item.label;
         });
 
         L.DomEvent.disableClickPropagation(container);
         return container;
     }
 });
-// map.addControl(new legendControl());
+
+// Thêm vào map
+map.addControl(new legendControl());
