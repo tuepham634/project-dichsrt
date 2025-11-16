@@ -5,7 +5,16 @@ const RoleModel = require('../../models/role.model');
 
 module.exports.verifyToken = async (req, res, next) => {
   try {
-    const token = req.cookies.token;
+    // const token = req.cookies.token;
+    let token;
+
+  // 1. Lấy token từ Authorization header (Bearer)
+  if (req.headers['authorization']) {
+    const parts = req.headers['authorization'].split(' ');
+    if (parts.length === 2 && parts[0] === 'Bearer') {
+      token = parts[1];
+    }
+  }
 
 
     if (!token) {
