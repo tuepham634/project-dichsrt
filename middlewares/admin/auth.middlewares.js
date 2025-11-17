@@ -6,7 +6,7 @@ const RoleModel = require('../../models/role.model');
 module.exports.verifyToken = async (req, res, next) => {
   try {
     // const token = req.cookies.token;
-    let token;
+  let token;
 
   // 1. Lấy token từ Authorization header (Bearer)
   if (req.headers['authorization']) {
@@ -16,6 +16,9 @@ module.exports.verifyToken = async (req, res, next) => {
     }
   }
 
+  if (!token && req.cookies.token) {
+    token = req.cookies.token;
+  }
 
     if (!token) {
       return res.redirect(`/${variableConfig.pathAdmin}/account/login`);
